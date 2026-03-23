@@ -136,7 +136,40 @@ const GeminiService = {
         this.enableDownload(htmlContent);
     },
 
-    // ============ Download Export ============
+    // ============ PDF Export (Cinematic Mode) ============
+    async downloadPDF() {
+        const element = document.getElementById('script-paper');
+        if (!element) return;
+
+        const project = AppState.get('currentProject');
+        const filename = project ? `${project.title.replace(/\s+/g, '_')}_Script.pdf` : 'DocuScript_Export.pdf';
+
+        const statusText = document.getElementById('ai-status-text');
+        if (statusText) statusText.textContent = "Finalizing cinematic PDF...";
+
+        const opt = {
+            margin: [0.5, 0.5],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true, 
+                backgroundColor: '#0f1115',
+                logging: false
+            },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        try {
+            await html2pdf().set(opt).from(element).save();
+            if (statusText) statusText.textContent = "Script finalized successfully.";
+        } catch (error) {
+            console.error("PDF generation failed:", error);
+            if (statusText) statusText.textContent = "Finalization failed. Try Word export.";
+        }
+    },
+
+    // ============ Download Export (Legacy Text/Word) ============
     enableDownload(content) {
         const downloadBtn = document.querySelector('.btn-download');
         if (downloadBtn) {

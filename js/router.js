@@ -461,6 +461,24 @@ const Router = {
                 }
             });
         }
+
+        // Handle Finalize Script (PDF + Dashboard)
+        const finalizeBtn = document.getElementById('btn-finalize');
+        if (finalizeBtn) {
+            finalizeBtn.addEventListener('click', async () => {
+                await GeminiService.downloadPDF();
+                // Delay navigation slightly to ensure download starts
+                setTimeout(() => this.navigate('/dashboard'), 1500);
+            });
+        }
+
+        // Handle Sidebar PDF Export
+        const exportPdfBtn = document.getElementById('btn-export-pdf');
+        if (exportPdfBtn) {
+            exportPdfBtn.addEventListener('click', async () => {
+                await GeminiService.downloadPDF();
+            });
+        }
     },
 
     // ============ Dashboard Page Init ============
