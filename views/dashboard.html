@@ -1,0 +1,359 @@
+<!-- ============================================
+     DASHBOARD VIEW
+     Route: /dashboard
+     ============================================ -->
+
+<!-- Sidebar Styles (Moved from dashboard.html head) -->
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+        transition: all 0.3s ease
+    }
+
+    .active-nav .material-symbols-outlined {
+        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+        color: #f4af25
+    }
+
+    .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05)
+    }
+
+    .glass-hover:hover {
+        border: 1px solid rgba(244, 175, 37, 0.3);
+        box-shadow: 0 0 20px rgba(244, 175, 37, 0.1);
+        transform: translatey(-2px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    .sidebar-expand:hover {
+        width: 240px
+    }
+
+    .project-card:hover .project-actions {
+        opacity: 1;
+        transform: translatey(0)
+    }
+
+    .typing-effect {
+        overflow: hidden;
+        border-right: 2px solid #f4af25;
+        white-space: nowrap;
+        margin: 0;
+        letter-spacing: 0.05em;
+        animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite
+    }
+
+    @keyframes typing {
+        from {
+            width: 0
+        }
+
+        to {
+            width: 100%
+        }
+    }
+
+    @keyframes blink-caret {
+
+        from,
+        to {
+            border-color: transparent
+        }
+
+        50% {
+            border-color: #f4af25
+        }
+    }
+</style>
+
+<!-- Background Gradients -->
+<div class="fixed inset-0 z-0 bg-gradient-to-br from-navy-deep via-charcoal to-navy-deep pointer-events-none">
+    <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[120px]"></div>
+</div>
+
+<div class="relative z-10 flex min-h-screen">
+    <!-- Slim Glassmorphism SideNavBar -->
+    <aside
+        class="group/sidebar sidebar-expand fixed left-0 top-0 h-full w-20 transition-all duration-500 ease-in-out glass border-r border-white/5 z-40 overflow-hidden flex flex-col items-center py-8">
+        <div class="flex flex-col items-center gap-10 w-full px-4">
+            <!-- Logo -->
+            <div class="flex items-center gap-4 w-full justify-start pl-2 cursor-pointer" data-route="/">
+                <div
+                    class="min-w-[40px] h-[40px] rounded-lg bg-primary flex items-center justify-center shadow-[0_0_15px_rgba(244,175,37,0.4)]">
+                    <span class="material-symbols-outlined text-background-dark font-bold">movie_filter</span>
+                </div>
+                <span
+                    class="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-bold text-lg whitespace-nowrap">DocuScript
+                    AI</span>
+            </div>
+            <!-- Nav Items -->
+            <nav class="flex flex-col gap-4 w-full">
+                <div class="active-nav flex items-center gap-4 w-full p-3 rounded-xl glass-hover cursor-pointer transition-colors hover:bg-white/5"
+                    data-route="/dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span
+                        class="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 text-sm font-medium">Dashboard</span>
+                </div>
+                <div class="flex items-center gap-4 w-full p-3 rounded-xl glass-hover cursor-pointer transition-colors hover:bg-white/5"
+                    data-route="/getstart">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span
+                        class="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 text-sm font-medium">Create
+                        Script</span>
+                </div>
+                <div
+                    class="flex items-center gap-4 w-full p-3 rounded-xl glass-hover cursor-pointer transition-colors hover:bg-white/5">
+                    <span class="material-symbols-outlined">history</span>
+                    <span
+                        class="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 text-sm font-medium">Project
+                        History</span>
+                </div>
+                <div
+                    class="flex items-center gap-4 w-full p-3 rounded-xl glass-hover cursor-pointer transition-colors hover:bg-white/5">
+                    <span class="material-symbols-outlined">auto_awesome</span>
+                    <span
+                        class="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 text-sm font-medium">AI
+                        Insights</span>
+                </div>
+                <div class="flex items-center gap-4 w-full p-3 rounded-xl glass-hover cursor-pointer transition-colors hover:bg-white/5"
+                    data-action="logout">
+                    <span class="material-symbols-outlined text-red-400">logout</span>
+                    <span
+                        class="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 text-sm font-medium text-red-400">Logout</span>
+                </div>
+            </nav>
+        </div>
+        <!-- Profile at Bottom -->
+        <div class="mt-auto flex items-center gap-4 w-full px-4 pb-4">
+            <div class="min-w-[40px] h-[40px] rounded-full border-2 border-primary/30 overflow-hidden">
+                <img alt="User Profile" class="w-full h-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1mg6W03HjDeOKeDzPgKMzoH5IaAqiLOPgJ9Ovu2oElOwD5RA8hXIo9DGbsWtjYr5HmDbTH8w2raDWWWVozsPpy4B10wNZ9AlVAoSv1T9fZ43uVW9hoJRsZA2FdJMdHthquz5Hdsltq3Rg9RqQQ4o0EFKob8CdFTrCK0GKhaIBHW42-uW5H2OOu6plp3-9Na8iwG-6w9MZIk8-iANTSvBgUjH_5w9PFZVFkSyW0fT3S4LCNI_FQmzVMsL_z7C14jZKmHP_mZ6zvDzy" />
+            </div>
+            <div class="flex flex-col opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300">
+                <span class="text-xs font-bold text-white">Alexander Rossi</span>
+                <span class="text-[10px] text-primary">Master Creator</span>
+            </div>
+        </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="flex-1 ml-20 p-8 lg:p-12 overflow-x-hidden">
+        <!-- Header Section -->
+        <header class="mb-12 max-w-4xl">
+            <div class="inline-block">
+                <h1 class="typing-effect text-white text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                    Welcome back, Creator.
+                </h1>
+            </div>
+            <p class="text-slate-400 text-lg font-light leading-relaxed max-w-2xl">
+                Your cinematic vision, amplified by intelligence. Ready to draft your next masterpiece?
+            </p>
+        </header>
+        <!-- Stats Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div class="glass glass-hover p-6 rounded-xl flex flex-col gap-3 group transition-all">
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-400 text-sm font-medium">Scripts Generated</span>
+                    <span
+                        class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">description</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-bold text-white">24</span>
+                    <span class="text-emerald-500 text-xs font-bold">+12%</span>
+                </div>
+                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-2">
+                    <div class="h-full bg-primary w-[70%]"></div>
+                </div>
+            </div>
+            <div class="glass glass-hover p-6 rounded-xl flex flex-col gap-3 group transition-all">
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-400 text-sm font-medium">Time Saved</span>
+                    <span
+                        class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">schedule</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-bold text-white">120h</span>
+                    <span class="text-emerald-500 text-xs font-bold">+25%</span>
+                </div>
+                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-2">
+                    <div class="h-full bg-primary w-[85%]"></div>
+                </div>
+            </div>
+            <div class="glass glass-hover p-6 rounded-xl flex flex-col gap-3 group transition-all">
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-400 text-sm font-medium">Words Crafted</span>
+                    <span
+                        class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">edit_note</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-bold text-white">85k</span>
+                    <span class="text-emerald-500 text-xs font-bold">+15%</span>
+                </div>
+                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-2">
+                    <div class="h-full bg-primary w-[60%]"></div>
+                </div>
+            </div>
+            <div class="glass glass-hover p-6 rounded-xl flex flex-col gap-3 group transition-all">
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-400 text-sm font-medium">Research Depth</span>
+                    <span
+                        class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors">biotech</span>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-bold text-white">98%</span>
+                    <span class="text-emerald-500 text-xs font-bold">+5%</span>
+                </div>
+                <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-2">
+                    <div class="h-full bg-primary w-[98%]"></div>
+                </div>
+            </div>
+        </section>
+        <!-- Recent Projects Section -->
+        <section class="relative">
+            <div class="flex items-center justify-between mb-8 px-2">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                    <span class="w-2 h-6 bg-primary rounded-full"></span>
+                    Recent Projects
+                </h2>
+                <button
+                    class="text-primary hover:text-primary/80 transition-colors text-sm font-medium flex items-center gap-1 group">
+                    View All Libraries
+                    <span
+                        class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </button>
+            </div>
+            <!-- Carousel -->
+            <div class="flex gap-8 overflow-x-auto pb-8 scrollbar-hide snap-x">
+                <!-- Card 1 -->
+                <div
+                    class="project-card flex-none w-[280px] snap-start group relative rounded-xl overflow-hidden glass border border-white/5">
+                    <div class="aspect-[2/3] w-full relative">
+                        <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyfkpVIppv7jv23WGX-lP1AX_EEV2XrVEsTHUJF6BRViXs7cxcWH4IHQatPH1ephAMPpYoowFGEhe4nymeurmC-uFwd7x-s6EeFnzPDERIXaBQ7E-m-mhdDLPoEuxSMCXEobtOe0l58CCQ619oy_W524LVc83YuEEHuTUskezz1qJFsHyZNo0FZ_v2GnTONbtpZgH5RFUHlaUrifktC1M7mQ3NNDBlbIo7A2jaM8h_GTN3NrUUvSRMBg254yyM7PL03UFutnpiEWIA" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <!-- Hover Actions -->
+                        <div
+                            class="project-actions absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 transition-all duration-500 translate-y-4 bg-black/40 backdrop-blur-sm">
+                            <button
+                                class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-8 py-2 rounded-lg transition-all shadow-lg active:scale-95">Edit
+                                Script</button>
+                            <button
+                                class="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-2 rounded-lg backdrop-blur-md transition-all active:scale-95">Export
+                                PDF</button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col gap-1">
+                        <h3 class="text-white font-bold text-lg group-hover:text-primary transition-colors">The Last
+                            Glaciers</h3>
+                        <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                            <span>Nature</span>
+                            <span class="w-1 h-1 bg-slate-600 rounded-full"></span>
+                            <span>45 min</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="project-card flex-none w-[280px] snap-start group relative rounded-xl overflow-hidden glass border border-white/5">
+                    <div class="aspect-[2/3] w-full relative">
+                        <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuClusSKJ-mLn7zSQrK4OcAUaJGGmiejwgXfXpPbZONJKRrODY-idimhPKBPYZ22NU4lW5Qa0VFkuYYjqV6Hw7V7bSkuRLgJZY_Dr2B5bcTaBM_l8wcTRO4XPoBU6tR3I5nlXuXJjjzd1dyQ2K-Z0MYgp7hOk5k4iVixUVugwOQBzj-quzm2QKU57_XGd1OFxqSmQVP5gTlGPNSHJrBuP7kyeK8n_HgPdWTshGisMJoGMYJoyLHDIBCSAMNB1ebizBfl3N1Ig0gNfsj9" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="project-actions absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 transition-all duration-500 translate-y-4 bg-black/40 backdrop-blur-sm">
+                            <button
+                                class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-8 py-2 rounded-lg transition-all active:scale-95">Edit
+                                Script</button>
+                            <button
+                                class="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-2 rounded-lg backdrop-blur-md transition-all active:scale-95">Export
+                                PDF</button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col gap-1">
+                        <h3 class="text-white font-bold text-lg group-hover:text-primary transition-colors">Silicon
+                            Dreams</h3>
+                        <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                            <span>Tech</span>
+                            <span class="w-1 h-1 bg-slate-600 rounded-full"></span>
+                            <span>22 min</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div
+                    class="project-card flex-none w-[280px] snap-start group relative rounded-xl overflow-hidden glass border border-white/5">
+                    <div class="aspect-[2/3] w-full relative">
+                        <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT3AMfHrlto397Qm9UmYMGlNWn3WnP8bWblgw5XROSfLlu7DDd19mq4RNP3A-Nv9aDOWz9IYg6JqILHselqg5XtdbFvj5Oqa_HfQg314KAwJyJxuTCwhVHudLayt7oOcu-rssxDc5qVuzLwfDbCBNU20KX9Ng6kEn7GFPuYZ_tLK3S7NcnbyLfDL018bwLtzY7-jJKb4vyV7tzrYqFlt8KbKKaLWV5C1gjQ_drHuAu-X7Yc7Zsc2SBGMmwDKrKOrCDQ5ZIdyOZq4j4" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="project-actions absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 transition-all duration-500 translate-y-4 bg-black/40 backdrop-blur-sm">
+                            <button
+                                class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-8 py-2 rounded-lg transition-all active:scale-95">Edit
+                                Script</button>
+                            <button
+                                class="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-2 rounded-lg backdrop-blur-md transition-all active:scale-95">Export
+                                PDF</button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col gap-1">
+                        <h3 class="text-white font-bold text-lg group-hover:text-primary transition-colors">Urban Echoes
+                        </h3>
+                        <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                            <span>Sociology</span>
+                            <span class="w-1 h-1 bg-slate-600 rounded-full"></span>
+                            <span>60 min</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 (New) -->
+                <div
+                    class="project-card flex-none w-[280px] snap-start group relative rounded-xl overflow-hidden glass border border-white/5">
+                    <div class="aspect-[2/3] w-full relative">
+                        <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBslux6B9Um7TwN9Dc8Vqhk-Lhk33UuwBMSF3VNtNbIJc9zoAGlE4xhFcpmoJzWWq8baxci6cV9agE3B_jFjuEmWOt2BkjRyMAaNoCYqtrZ2rwlgiiIwvlWyH4VN8JFHZ-j6AAStYUy3asPRFLQqaQu5CGO0VKU9Ki8svWHbgnC7BlYmEQrsmG9wVZu0AevQHyvtD3IKP8djs5yIRo1h4zdKHn16gBLTW3-O-8Ra_1ZU-XGwQ8Tau_Snnj9hcWv-JbyMVsFDFv5z8yG" />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="project-actions absolute inset-0 flex flex-col items-center justify-center gap-4 opacity-0 transition-all duration-500 translate-y-4 bg-black/40 backdrop-blur-sm">
+                            <button
+                                class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-8 py-2 rounded-lg transition-all active:scale-95">Edit
+                                Script</button>
+                            <button
+                                class="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-2 rounded-lg backdrop-blur-md transition-all active:scale-95">Export
+                                PDF</button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col gap-1">
+                        <h3 class="text-white font-bold text-lg group-hover:text-primary transition-colors">Abyssal
+                            Reach</h3>
+                        <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                            <span>Oceanography</span>
+                            <span class="w-1 h-1 bg-slate-600 rounded-full"></span>
+                            <span>35 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Floating Dust Particle Effect (CSS only) -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-20">
+        <div class="absolute top-[20%] left-[30%] w-1 h-1 bg-white/20 rounded-full blur-[2px] animate-pulse"></div>
+        <div class="absolute top-[60%] left-[80%] w-1.5 h-1.5 bg-primary/20 rounded-full blur-[1px] animate-pulse"
+            style="animation-delay: 1s;"></div>
+        <div class="absolute top-[40%] left-[10%] w-0.5 h-0.5 bg-white/30 rounded-full blur-[1px] animate-pulse"
+            style="animation-delay: 2s;"></div>
+    </div>
+</div>
