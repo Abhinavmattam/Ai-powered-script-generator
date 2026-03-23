@@ -147,6 +147,11 @@ const GeminiService = {
         const statusText = document.getElementById('ai-status-text');
         if (statusText) statusText.textContent = "Finalizing cinematic PDF...";
 
+        // Reset scroll for perfect capture
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+        window.scrollTo(0, 0);
+
         // Add PDF Mode for contrast (ON BODY)
         document.body.classList.add('pdf-mode');
 
@@ -155,12 +160,12 @@ const GeminiService = {
             filename: filename,
             image: { type: 'jpeg', quality: 1.0 },
             html2canvas: { 
-                scale: 1, 
+                scale: 2, // High resolution
                 useCORS: true, 
                 backgroundColor: '#ffffff',
                 logging: false,
-                width: 800,
-                windowWidth: 800
+                scrollX: 0,
+                scrollY: 0
             },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -173,8 +178,9 @@ const GeminiService = {
             console.error("PDF generation failed:", error);
             if (statusText) statusText.textContent = "Finalization failed. Try Word export.";
         } finally {
-            // Remove PDF mode to restore dark cinematic editor
+            // Restore state
             document.body.classList.remove('pdf-mode');
+            window.scrollTo(scrollX, scrollY);
         }
     },
 
