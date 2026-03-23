@@ -37,6 +37,31 @@
     .script-character-name { @apply block text-[#f4af25] font-black text-xs uppercase tracking-[0.2em] mb-2 opacity-80; }
     .script-dialogue-block p { @apply text-slate-200 leading-snug; }
     .script-action { @apply italic text-slate-400 opacity-90 leading-relaxed mb-8 block px-4; }
+    
+    /* PDF / PRINT OPTIMIZATION */
+    .pdf-mode {
+        background: white !important;
+        color: black !important;
+    }
+    .pdf-mode .script-title { color: #1a1a1a !important; }
+    .pdf-mode .script-subtitle { color: #f4af25 !important; }
+    .pdf-mode .script-opening-paragraph { color: #2d2d2d !important; }
+    .pdf-mode .script-opening-paragraph::first-letter { color: #e59a00 !important; }
+    .pdf-mode .script-scene-heading { color: black !important; border-color: #eee !important; }
+    .pdf-mode .script-character-name { color: #1a1a1a !important; }
+    .pdf-mode .script-dialogue-block p { color: #333 !important; }
+    .pdf-mode .script-action { color: #555 !important; }
+    .pdf-mode .script-camera-angle { color: #888 !important; border-color: #f4af25 !important; }
+    .pdf-mode .generated-sequence { border-color: #eee !important; opacity: 1 !important; }
+
+    /* PAGINATION FIXES */
+    .script-scene-heading, 
+    .script-dialogue-block, 
+    .script-characters-section,
+    .script-camera-angle {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 </style>
 
 <div class="relative flex flex-col h-screen overflow-hidden">

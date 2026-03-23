@@ -147,17 +147,23 @@ const GeminiService = {
         const statusText = document.getElementById('ai-status-text');
         if (statusText) statusText.textContent = "Finalizing cinematic PDF...";
 
+        // Add PDF Mode for contrast
+        element.classList.add('pdf-mode');
+
         const opt = {
-            margin: [0.5, 0.5],
+            margin: [0.75, 0.75], // Increased margins for professional look
             filename: filename,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { 
                 scale: 2, 
                 useCORS: true, 
-                backgroundColor: '#0f1115',
-                logging: false
+                backgroundColor: '#ffffff',
+                logging: false,
+                scrollX: 0,
+                scrollY: 0
             },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         };
 
         try {
@@ -166,6 +172,9 @@ const GeminiService = {
         } catch (error) {
             console.error("PDF generation failed:", error);
             if (statusText) statusText.textContent = "Finalization failed. Try Word export.";
+        } finally {
+            // Remove PDF mode to restore dark cinematic editor
+            element.classList.remove('pdf-mode');
         }
     },
 
