@@ -38,34 +38,69 @@
     .script-dialogue-block p { @apply text-slate-200 leading-snug; }
     .script-action { @apply italic text-slate-400 opacity-90 leading-relaxed mb-8 block px-4; }
     
-    /* PDF / PRINT OPTIMIZATION (FORCE DARK & FIXED WIDTH) */
+    .script-dialogue-block p { @apply text-slate-200 leading-snug; }
+    .script-action { @apply italic text-slate-400 opacity-90 leading-relaxed mb-8 block px-4; }
+</style>
+
+<!-- ============================================
+     PDF / PRINT OPTIMIZATION (FORCE DARK & FIXED WIDTH)
+     Standard CSS to ensure html2canvas captures correctly
+     ============================================ -->
+<style>
     .pdf-mode {
-        background: white !important;
-        color: black !important;
-        width: 6.5in !important; /* Standard printable width */
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        width: 800px !important; /* Fixed width for standard A4 capture */
         max-width: none !important;
         margin: 0 auto !important;
-        padding: 0.5in !important;
-        border: none !important;
+        padding: 50px !important;
+        border: 1px solid #eee !important;
         box-shadow: none !important;
         transform: none !important;
     }
+
     .pdf-mode * {
-        color: black !important;
+        color: #000000 !important;
+        background-color: transparent !important;
         text-shadow: none !important;
         opacity: 1 !important;
+        visibility: visible !important;
     }
-    .pdf-mode .script-scene-heading { border-color: #ddd !important; }
-    .pdf-mode .script-subtitle, .pdf-mode .script-opening-paragraph::first-letter { color: #886600 !important; }
-    .pdf-mode .generated-sequence { border: none !important; padding: 0 !important; margin: 0 !important; opacity: 1 !important; }
+
+    .pdf-mode .script-scene-heading { 
+        color: #000 !important; 
+        border-bottom: 2px solid #eee !important;
+        padding-bottom: 10px !important;
+    }
+
+    .pdf-mode .script-subtitle, 
+    .pdf-mode .script-character-name { 
+        color: #111 !important; 
+        font-weight: bold !important;
+    }
+
+    .pdf-mode .script-opening-paragraph::first-letter { 
+        color: #000 !important; 
+    }
+
+    .pdf-mode .script-action,
+    .pdf-mode .script-camera-angle { 
+        color: #444 !important; 
+    }
+
+    .pdf-mode .generated-sequence { 
+        border: none !important; 
+        opacity: 1 !important; 
+        margin-top: 20px !important;
+    }
 
     /* PAGINATION FIXES */
     .script-scene-heading, 
     .script-dialogue-block, 
     .script-characters-section,
     .script-camera-angle {
-        page-break-inside: avoid;
-        break-inside: avoid;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 </style>
 

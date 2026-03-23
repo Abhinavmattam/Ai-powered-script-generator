@@ -151,17 +151,16 @@ const GeminiService = {
         element.classList.add('pdf-mode');
 
         const opt = {
-            margin: 0, // Margin is handled by .pdf-mode internal padding
+            margin: 0, 
             filename: filename,
             image: { type: 'jpeg', quality: 1.0 },
             html2canvas: { 
-                scale: 2, 
+                scale: 1, // Using fixed width, scale 1 is safer for some layouts
                 useCORS: true, 
                 backgroundColor: '#ffffff',
                 logging: false,
-                letterRendering: true,
-                width: 624, // Matches 6.5 inches at 96 DPI
-                windowWidth: 624
+                width: 800,
+                windowWidth: 800
             },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
