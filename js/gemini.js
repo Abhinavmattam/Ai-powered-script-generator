@@ -147,15 +147,15 @@ const GeminiService = {
         const statusText = document.getElementById('ai-status-text');
         if (statusText) statusText.textContent = "Finalizing cinematic PDF...";
 
-        // Add PDF Mode for contrast
-        element.classList.add('pdf-mode');
+        // Add PDF Mode for contrast (ON BODY)
+        document.body.classList.add('pdf-mode');
 
         const opt = {
             margin: 0, 
             filename: filename,
             image: { type: 'jpeg', quality: 1.0 },
             html2canvas: { 
-                scale: 1, // Using fixed width, scale 1 is safer for some layouts
+                scale: 1, 
                 useCORS: true, 
                 backgroundColor: '#ffffff',
                 logging: false,
@@ -174,7 +174,7 @@ const GeminiService = {
             if (statusText) statusText.textContent = "Finalization failed. Try Word export.";
         } finally {
             // Remove PDF mode to restore dark cinematic editor
-            element.classList.remove('pdf-mode');
+            document.body.classList.remove('pdf-mode');
         }
     },
 

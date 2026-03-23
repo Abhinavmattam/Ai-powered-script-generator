@@ -44,6 +44,39 @@
             },
         }
     </script>
+    </script>
+    <style>
+        /* PDF EXPORT OVERRIDES (GLOBAL) */
+        body.pdf-mode {
+            background-color: white !important;
+        }
+        body.pdf-mode #script-paper {
+            background-color: white !important;
+            color: black !important;
+            width: 800px !important;
+            max-width: none !important;
+            margin: 0 auto !important;
+            padding: 50px !important;
+            border: none !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        body.pdf-mode #script-paper * {
+            color: black !important;
+            background-color: transparent !important;
+            text-shadow: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        body.pdf-mode #script-paper .script-scene-heading {
+            border-bottom: 2px solid #ddd !important;
+        }
+        body.pdf-mode .generated-sequence {
+            border: none !important;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+    </style>
 </head>
 
 <body
