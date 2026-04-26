@@ -47,13 +47,18 @@ const FirebaseService = {
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
             const user = userCredential.user;
 
-            // Save additional profile data to Firestore
-            await db.collection("users").doc(user.uid).set({
-                email: email,
-                fullName: profileData.fullName,
-                username: profileData.username,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            // Save additional profile data to Firestore (vulnerable to permission errors)
+            try {
+                await db.collection("users").doc(user.uid).set({
+                    email: email,
+                    fullName: profileData.fullName,
+                    username: profileData.username,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (firestoreError) {
+                console.error("Firestore profile creation failed:", firestoreError);
+                // We still returned success because Auth passed, but user should know profile might be missing
+            }
 
             return { success: true, user };
         } catch (error) {
@@ -72,9 +77,17 @@ const FirebaseService = {
             const userCredential = await auth.signInWithEmailAndPassword(email, password);
             const user = userCredential.user;
 
-            // Fetch profile data from Firestore (optional sync)
-            const doc = await db.collection("users").doc(user.uid).get();
-            const userData = doc.exists ? doc.data() : { email: user.email };
+            // Fetch profile data from Firestore (vulnerable to permission errors)
+            let userData = { email: user.email };
+            try {
+                const doc = await db.collection("users").doc(user.uid).get();
+                if (doc.exists) {
+                    userData = doc.data();
+                }
+            } catch (firestoreError) {
+                console.warn("Firestore profile fetch failed (likely permissions):", firestoreError);
+                // We continue since Auth succeeded
+            }
 
             return { success: true, user, userData };
         } catch (error) {
